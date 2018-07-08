@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>区块链账本</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/pb.css">
+    <script src="js/jquery-1.12.4.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap.js" type="text/javascript"></script>
+    <script src="js/pb.js" type="text/javascript"></script>
+    <script src="js/jsrsasign-all-min.js" type="text/javascript"></script>
+    <script src="js/websocket.js" type="text/javascript"></script>
+
+    <style>
+        #info {
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-group {
+            margin-top: 10px;
+        }
+
+        textarea, input {
+            margin-bottom: 10px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="row" style="margin: 15px">
+    <div class="col-lg-8">
+        <label for="sendPublicKey">发送方公钥</label>
+        <textarea class="form-control" id="sendPublicKey" placeholder="请输入发送方公钥">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiAe4PHSXeAY69+6wohk4bZR4h5r/7+uy
+d+3t1cZTsGg0VhXMwtxOe4Zpatze6pWxOSMexnn2zg8sPj1LU7/pri9BRonaSxF5ubiOe1TNp4Z7
+DNpwmhdniw1/kxRv01vPrZTIhIoY1RlDUQ1gHZQFg8TAysYez2Fxa2/eMChX+ehVIj17fipLvzgx
+af6GbamgdoFohsq9ZTE7FKJ1QpTLYv18FQeIW9/j2BJGMZCrlKkFyVsXIIqkBG9d+NAWHwrTJ//A
+Ye2MoNbnfZqR2nK4/EfblnQLGwRXhfRl3+i3v6YG67L7K+Pg/V+yxNsKG8LS2HuLuH14oOViNfIU
+0ET8TQIDAQAB</textarea>
+        <label for="sendPrivateKey">发送方私钥</label>
+        <textarea class="form-control" id="sendPrivateKey" placeholder="请输入发送方私钥">-----BEGIN PRIVATE KEY-----
+MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCIB7g8dJd4Bjr37rCiGThtlHiH
+mv/v67J37e3VxlOwaDRWFczC3E57hmlq3N7qlbE5Ix7GefbODyw+PUtTv+muL0FGidpLEXm5uI57
+VM2nhnsM2nCaF2eLDX+TFG/TW8+tlMiEihjVGUNRDWAdlAWDxMDKxh7PYXFrb94wKFf56FUiPXt+
+Kku/ODFp/oZtqaB2gWiGyr1lMTsUonVClMti/XwVB4hb3+PYEkYxkKuUqQXJWxcgiqQEb1340BYf
+CtMn/8Bh7Yyg1ud9mpHacrj8R9uWdAsbBFeF9GXf6Le/pgbrsvsr4+D9X7LE2wobwtLYe4u4fXig
+5WI18hTQRPxNAgMBAAECggEAQ7Rr65MwTKn1Ma/YtGWPI2NRdlUca+LJKk3/IXab8uJ6ohoplxcl
+7O9iirCyNtoYolKrn6fWworkv3msg1uyyGJ2v9AfGVvyVRDZweLclTQnDKewgdGCVMB8Lc1vNyis
+Pj4ea3F8mJwBWFcq7q3c7M/CEWr4rMlYNVwxn5CE8ToH/FhBVEmWDnZwahi9HxDBL87G0mfh5iY9
+OzAg1QjjjCajNz1mKUjYSjbwI7sxRAFsVPnH/EYdkz0zlbR8hV5hRJCu2FfErBxKHhkP/MUN2RPY
+hwON/mm3KwG1fUjsc0LqGjsdZYCl57cn9mbfu2wN/L8q5o+0B9Vp/oQCl6eBYQKBgQDhrz0CZgl5
+6PlbLZJZMs1V+eRgjbPQBWA96z0q67WTW8Ozge53R4VkVcsNzed+csILO9YWfFfOQAkkEfYcX2iG
+WgicZSx8bamrn2rXdu97levoVeEaHsB4wXJlNQLQurmXJiU+ONpFgu/oGyYnGzBDmgAAmDteLZcT
+sKHXxJBY5QKBgQCaTXpPkrWubu+WOtgIWFDToyPzxTUf6pZABl/N6bSzXrlEPUv1hOeAf09PGMFR
+PYnFYNK/N+6apN33o+fngrGPS3lWucPba/tvcXLKSFmJntJJy5ibkOV3txqlXJ/2IiW5u1tvIzmc
+ivLj6fwJjtyeoswBfpazvq0nRcRB4gHnSQKBgAF7Et1nKfzAyJIOlH09VheQUi1IALwGrQD7ACW9
+8i0LVxdgbN4ffAKShYiLp08vFZLZS6hOHI1f4i94ZrL89UScZp4QE+ClH43et+a+Awg+jZOyrI1t
+Ujn4mvWLCX+xGfKh73CfEt+N4mEVfISZKxHmesWGOi1+AxW//O/bfE75AoGAP1YwL3uEEe69b4gF
+5x8BRm3/su8vCEPNmshDCQ22O65VE9qpVEVSlV8smcYKjCNbauZ8ezslONsVtbHU3iW6ZpxPWTb1
+Wxru4WbK/JdIEYJcxSfKI4kNd990E456ppiLrbpnJK5r1oL+gmkoKHA4xPEEFlT03SEWiDlN/tEb
+gOkCgYBPamZbG9m2jiESuat93NNntarfdHlERHVVKPdivELyyF/AA6EszmmXPM5Mx9H8ylDYk2M+
+Wk/ApbhgZz6FECobSFBnxndgqK5119HgOzRQRKCJg0Rx+nhSaTez00HZMz1+zYNck18IugrmvUkI
+wjChhnhZhaZYAh23Iv+FO5jHSQ==
+-----END PRIVATE KEY-----</textarea>
+        <label for="receivePublicKey">接收方公钥</label>
+        <textarea class="form-control" id="receivePublicKey" placeholder="请输入接收方公钥">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiAe4PHSXeAY69+6wohk4bZR4h5r/7+uy
+d+3t1cZTsGg0VhXMwtxOe4Zpatze6pWxOSMexnn2zg8sPj1LU7/pri9BRonaSxF5ubiOe1TNp4Z7
+DNpwmhdniw1/kxRv01vPrZTIhIoY1RlDUQ1gHZQFg8TAysYez2Fxa2/eMChX+ehVIj17fipLvzgx
+af6GbamgdoFohsq9ZTE7FKJ1QpTLYv18FQeIW9/j2BJGMZCrlKkFyVsXIIqkBG9d+NAWHwrTJ//A
+Ye2MoNbnfZqR2nK4/EfblnQLGwRXhfRl3+i3v6YG67L7K+Pg/V+yxNsKG8LS2HuLuH14oOViNfIU
+0ET8TQIDAQAB</textarea>
+
+        <label for="idinput">转账信息</label>
+        <input type="text" id="idinput" class="form-control" placeholder="请输入数据">
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" onclick="addNote()">添加数据</button>
+            <button type="button" class="btn btn-default" onclick="checkList()">校验数据</button>
+        </div>
+
+        <p class="bg-info" id="info"></p>
+
+        <input type="text" id="idport" class="form-control" placeholder="请输入连接端口号">
+        <input type="text" id="idmsg" class="form-control" placeholder="请输入广播消息">
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" onclick="regist()">注册连接</button>
+            <button type="button" class="btn btn-default" onclick="conn()">建立连接</button>
+            <button type="button" class="btn btn-default" onclick="syncBlock()">请求同步</button>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="row" style="margin: 15px">
+    <div class="col-lg-12">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <td>timestamp</td>
+                <td>nonce</td>
+                <td>hash</td>
+                <td>transaction</td>
+                <td>prehash</td>
+            </tr>
+
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    // function addNote() {
+    //     loading.baosight.showPageLoadingMsg(false);
+    //     var input = $("#idinput").val();
+    //     $.post("/addNote", {content: input}, function (data) {
+    //         loading.baosight.hidePageLoadingMsg();
+    //         $("#info").html(data);
+    //         showList();
+    //     })
+    // }
+
+    function addNote() {
+        loading.baosight.showPageLoadingMsg(false);
+        var input = $("#idinput").val();
+        var sendPublicKey = $("#sendPublicKey").val();
+        var receivePublicKey = $("#receivePublicKey").val();
+        var sendPrivateKey = $("#sendPrivateKey").val();
+
+        console.log(sendPublicKey)
+        console.log(sendPrivateKey)
+        console.log(receivePublicKey)
+
+        var prikey = KEYUTIL.getKey(sendPrivateKey);
+        var sig = new KJUR.crypto.Signature({"alg": "SHA256withRSA"});
+
+        sig.init(prikey);
+        sig.updateString(input);
+        var sigValueHex = sig.sign();
+
+        var transaction = {
+            sendPublicKey: sendPublicKey,
+            receivePublicKey: receivePublicKey,
+            content: input,
+            signature: sigValueHex
+        };
+
+        $.post("/addNote", transaction, function (data) {
+            loading.baosight.hidePageLoadingMsg();
+            $("#info").html(data);
+            showList();
+        })
+
+        var transactionStr = JSON.stringify(transaction);
+
+        $.post("/broadcast", {msg: transactionStr}, function (data) {
+            console.log("成功")
+        })
+
+    }
+
+
+    // <tr><td></td><td></td><td></td><td></td><td></td></tr>
+    function showList() {
+        $.get("/showList", function (data) {
+            $("tbody").html("");
+
+            if (data != null) {
+                for (var i = 0; i < data.length; i++) {
+                    $("tbody").append("<tr><td>" + data[i].timestamp + "</td><td>" + data[i].nonce + "</td><td>" + data[i].hash + "</td><td>" + data[i].content + "</td><td>" + data[i].prehash + "</td></tr>")
+                }
+            }
+
+        })
+    }
+
+    function checkList() {
+        $.get("/checkList", function (data) {
+            $("#info").html(data);
+        })
+    }
+
+    $(function () {
+        showList();
+    })
+
+</script>
+
+</body>
+</html>
